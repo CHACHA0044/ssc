@@ -3,16 +3,16 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useRef, Suspense, lazy } from "react";
-import { 
-  Sparkles, 
-  Zap, 
-  ShieldCheck, 
-  Activity, 
-  Clock, 
-  Unlink, 
-  BarChart3, 
-  Radar, 
-  Target, 
+import {
+  Sparkles,
+  Zap,
+  ShieldCheck,
+  Activity,
+  Clock,
+  Unlink,
+  BarChart3,
+  Radar,
+  Target,
   RefreshCw,
   ChevronDown,
   ArrowRight
@@ -40,12 +40,12 @@ const FEATURES = [
 export default function LandingPage() {
   const containerRef = useRef(null);
   const heroRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  
+
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.98]);
 
@@ -91,41 +91,15 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-14 leading-relaxed font-medium"
           >
-            A high-fidelity simulation of predictive disruption management and 
+            A high-fidelity simulation of predictive disruption management and
             dynamic neural rerouting for global enterprise logistics.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-            className="flex flex-wrap justify-center gap-6"
-          >
-            <Link href="/orders">
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2, backgroundColor: "#f8fafc" }}
-                whileTap={{ scale: 0.98 }}
-                className="px-10 py-5 rounded-2xl bg-white text-black font-black text-sm tracking-widest uppercase shadow-2xl transition-all cursor-pointer"
-              >
-                Launch Simulation
-              </motion.button>
-            </Link>
-            <Link href="/dashboard">
-              <motion.button
-                whileHover={{ scale: 1.02, y: -2, background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.2)" }}
-                whileTap={{ scale: 0.98 }}
-                className="px-10 py-5 rounded-2xl border border-white/10 bg-white/[0.03] text-white font-black text-sm tracking-widest uppercase backdrop-blur-xl cursor-pointer transition-all"
-              >
-                Analytics Desk
-              </motion.button>
-            </Link>
-          </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20"
+            className="absolute top-140 left-1/2 -translate-x-1/2 opacity-20"
           >
             <motion.div
               animate={{ y: [0, 8, 0] }}
@@ -158,7 +132,7 @@ export default function LandingPage() {
               Advanced simulation of autonomous logistics through neural graph optimization.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-12">
             <div className="flex flex-col gap-4">
               <span className="text-white text-[10px] font-black uppercase tracking-[0.2em]">Platform</span>
@@ -193,7 +167,7 @@ function ProblemSection() {
             The Cost of <span className="text-slate-600">Reactive</span> Logistics
           </h2>
           <p className="text-slate-400 text-xl max-w-2xl leading-relaxed">
-            Legacy systems wait for delays to happen. Our orchestrator predicts and neutralizes 
+            Legacy systems wait for delays to happen. Our orchestrator predicts and neutralizes
             them before they impact your bottom line.
           </p>
         </motion.div>
@@ -204,8 +178,8 @@ function ProblemSection() {
             { stat: "3.2X", label: "CASCADING IMPACT", desc: "Single delays amplify into multiple failure points across the network." },
             { stat: "$184B", label: "MARKET LOSS", desc: "Annual revenue lost globally due to poor disruption response." },
           ].map((item, i) => (
-            <motion.div 
-              key={i} 
+            <motion.div
+              key={i}
               whileHover={{ backgroundColor: "rgba(255,255,255,0.02)", scale: 1.01 }}
               className="bg-black p-10 space-y-6 transition-colors duration-500"
             >
@@ -229,7 +203,7 @@ function SolutionSection() {
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <motion.div {...fadeInUp}>
             <h2 className="text-5xl sm:text-6xl font-bold text-white tracking-tighter mb-10">
-              Self-Healing <br/>Supply Networks
+              Self-Healing <br />Supply Networks
             </h2>
             <div className="space-y-12">
               {[
@@ -237,8 +211,8 @@ function SolutionSection() {
                 { step: "02", title: "Predictive Analysis", desc: "Probabilistic modeling of route risks 72 hours into the future.", icon: Target },
                 { step: "03", title: "Autonomous Action", desc: "Automated rerouting and resource reallocation via neural graph search.", icon: RefreshCw },
               ].map((item, i) => (
-                <motion.div 
-                  key={i} 
+                <motion.div
+                  key={i}
                   whileHover={{ x: 10 }}
                   className="flex gap-8 group cursor-default"
                 >
@@ -251,7 +225,7 @@ function SolutionSection() {
               ))}
             </div>
           </motion.div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "circOut" }}
@@ -259,7 +233,7 @@ function SolutionSection() {
           >
             <div className="absolute inset-0 grid-pattern opacity-20 group-hover:opacity-40 transition-opacity duration-700" />
             <motion.div
-              animate={{ 
+              animate={{
                 scale: [1, 1.1, 1],
                 opacity: [0.2, 0.4, 0.2]
               }}
@@ -279,8 +253,8 @@ function FeaturesSection() {
   return (
     <section className="py-40 px-6 bg-black relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <motion.div 
-          {...fadeInUp} 
+        <motion.div
+          {...fadeInUp}
           className="text-center mb-16"
         >
           <h2 className="text-5xl font-bold text-white tracking-tighter mb-6">Built for Global Scale</h2>
