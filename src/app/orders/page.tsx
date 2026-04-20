@@ -7,6 +7,20 @@ import { PICKUP_LOCATIONS, DROP_LOCATIONS } from "@/lib/mock-data";
 import type { Order } from "@/lib/types";
 import { cn, getStatusBgColor, formatTimestamp } from "@/lib/utils";
 import { showToast } from "@/components/Toast";
+import { 
+  Plus, 
+  Zap, 
+  Sparkles, 
+  Package, 
+  ClipboardList, 
+  Dices, 
+  Play, 
+  Pause, 
+  Box,
+  MapPin,
+  Clock,
+  AlertCircle
+} from "lucide-react";
 
 export default function OrdersPage() {
   const [pickup, setPickup] = useState("");
@@ -83,73 +97,95 @@ export default function OrdersPage() {
     }
   };
 
-  const selectClass = "w-full bg-[#1E293B] border border-indigo-500/15 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-indigo-500/40 transition-colors appearance-none cursor-pointer";
+  const selectClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-indigo-500/40 transition-all appearance-none cursor-pointer hover:bg-white/10";
 
   return (
-    <div className="min-h-screen pt-28 pb-16 px-6">
-      <div className="max-w-6xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <h1 className="text-4xl font-bold text-white mb-3">Create Order</h1>
-          <p className="text-slate-400 text-lg">Simulate incoming logistics requests and observe intelligent routing</p>
+    <div className="min-h-screen pt-32 pb-16 px-6 relative">
+      <div className="absolute inset-0 grid-pattern opacity-50" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-12">
+          <h1 className="text-5xl font-black text-white mb-4 tracking-tighter">Create Order</h1>
+          <p className="text-slate-400 text-lg font-medium">Simulate incoming logistics requests and observe intelligent routing</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid lg:grid-cols-5 gap-10">
           {/* Form */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="lg:col-span-2">
-            <form onSubmit={handleSubmit} className="glass-card p-8 space-y-6">
-              <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-sm">⊞</span>
+            <form onSubmit={handleSubmit} className="glass-card p-10 space-y-8">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+                  <Plus size={20} className="text-white" />
+                </div>
                 New Order
               </h2>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Pickup Location</label>
-                <select value={pickup} onChange={(e) => setPickup(e.target.value)} className={selectClass}>
-                  <option value="" className="bg-[#1E293B]">Select location...</option>
-                  {PICKUP_LOCATIONS.map((l) => <option key={l} value={l} className="bg-[#1E293B]">{l}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Drop Location</label>
-                <select value={drop} onChange={(e) => setDrop(e.target.value)} className={selectClass}>
-                  <option value="" className="bg-[#1E293B]">Select location...</option>
-                  {DROP_LOCATIONS.map((l) => <option key={l} value={l} className="bg-[#1E293B]">{l}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Priority</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {(["normal", "express"] as const).map((p) => (
-                    <button key={p} type="button" onClick={() => setPriority(p)}
-                      className={cn("px-4 py-3 rounded-xl text-sm font-medium border transition-all cursor-pointer capitalize",
-                        priority === p ? "bg-indigo-500/15 border-indigo-500/40 text-indigo-300" : "bg-[#1E293B] border-slate-700 text-slate-400 hover:border-slate-600")}>
-                      {p === "express" && "⚡ "}{p}
-                    </button>
-                  ))}
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Pickup Location</label>
+                  <div className="relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                    <select value={pickup} onChange={(e) => setPickup(e.target.value)} className={cn(selectClass, "pl-12")}>
+                      <option value="" className="bg-[#0A0E17]">Select location...</option>
+                      {PICKUP_LOCATIONS.map((l) => <option key={l} value={l} className="bg-[#0A0E17]">{l}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Drop Location</label>
+                  <div className="relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                    <select value={drop} onChange={(e) => setDrop(e.target.value)} className={cn(selectClass, "pl-12")}>
+                      <option value="" className="bg-[#0A0E17]">Select location...</option>
+                      {DROP_LOCATIONS.map((l) => <option key={l} value={l} className="bg-[#0A0E17]">{l}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Priority</label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(["normal", "express"] as const).map((p) => (
+                      <button key={p} type="button" onClick={() => setPriority(p)}
+                        className={cn("px-4 py-3 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center justify-center gap-2",
+                          priority === p ? "bg-indigo-500/10 border-indigo-500/40 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.1)]" : "bg-white/5 border-white/5 text-slate-500 hover:border-white/10 hover:text-slate-300")}>
+                        {p === "express" && <Zap size={14} />}
+                        {p.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Package Type</label>
+                  <div className="grid grid-cols-3 gap-3">
+                    {(["standard", "fragile", "heavy"] as const).map((t) => (
+                      <button key={t} type="button" onClick={() => setPackageType(t)}
+                        className={cn("px-3 py-3 rounded-xl text-[10px] font-black border transition-all cursor-pointer flex flex-col items-center gap-2",
+                          packageType === t ? "bg-indigo-500/10 border-indigo-500/40 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.1)]" : "bg-white/5 border-white/5 text-slate-500 hover:border-white/10 hover:text-slate-300")}>
+                        {t === "fragile" ? <Sparkles size={16} /> : t === "heavy" ? <Package size={16} /> : <ClipboardList size={16} />}
+                        {t.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">Package Type</label>
-                <div className="grid grid-cols-3 gap-3">
-                  {(["standard", "fragile", "heavy"] as const).map((t) => (
-                    <button key={t} type="button" onClick={() => setPackageType(t)}
-                      className={cn("px-3 py-3 rounded-xl text-xs font-medium border transition-all cursor-pointer capitalize",
-                        packageType === t ? "bg-indigo-500/15 border-indigo-500/40 text-indigo-300" : "bg-[#1E293B] border-slate-700 text-slate-400 hover:border-slate-600")}>
-                      {t === "fragile" ? "🔮 " : t === "heavy" ? "📦 " : "📋 "}{t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}
-                className="w-full py-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/20 disabled:opacity-50 cursor-pointer">
-                {isSubmitting ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Submitting...</span> : "Submit Order"}
+
+              <motion.button type="submit" disabled={isSubmitting} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+                className="w-full py-5 rounded-2xl bg-indigo-600 text-white font-black text-sm shadow-xl shadow-indigo-500/20 disabled:opacity-50 cursor-pointer hover:bg-indigo-500 transition-colors">
+                {isSubmitting ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />SUBMITTING...</span> : "SUBMIT ORDER"}
               </motion.button>
-              <div className="flex gap-3 pt-2">
+
+              <div className="flex gap-4 pt-4 border-t border-white/5">
                 <motion.button type="button" onClick={generateRandom} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                  className="flex-1 py-3 rounded-xl border border-cyan-500/25 text-cyan-300 text-sm font-medium hover:bg-cyan-500/10 cursor-pointer transition-colors">🎲 Random</motion.button>
+                  className="flex-1 py-3 rounded-xl bg-white/5 border border-white/5 text-slate-400 text-[10px] font-black tracking-widest hover:bg-white/10 hover:text-white cursor-pointer transition-all flex items-center justify-center gap-2">
+                  <Dices size={14} /> RANDOM
+                </motion.button>
                 <motion.button type="button" onClick={toggleAutoGenerate} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                  className={cn("flex-1 py-3 rounded-xl border text-sm font-medium cursor-pointer transition-all",
-                    autoGenerate ? "border-amber-500/40 text-amber-300 bg-amber-500/10" : "border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/10")}>
-                  {autoGenerate ? "⏸ Stop" : "▶ Auto"}
+                  className={cn("flex-1 py-3 rounded-xl border text-[10px] font-black tracking-widest cursor-pointer transition-all flex items-center justify-center gap-2",
+                    autoGenerate ? "border-amber-500/40 text-amber-400 bg-amber-500/10" : "border-white/5 bg-white/5 text-slate-400 hover:text-white")}>
+                  {autoGenerate ? <><Pause size={14} /> STOP</> : <><Play size={14} /> AUTO</>}
                 </motion.button>
               </div>
             </form>
@@ -157,48 +193,90 @@ export default function OrdersPage() {
 
           {/* Live Log */}
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="lg:col-span-3">
-            <div className="glass-card p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 pulse-glow" />Live Order Log
+            <div className="glass-card p-10 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-10">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)] pulse-glow" />
+                  Live Order Log
                 </h2>
-                <span className="text-sm text-slate-400">{submittedOrders.length} orders</span>
+                <div className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black text-slate-400 tracking-widest">
+                  {submittedOrders.length} SHIPMENTS
+                </div>
               </div>
+
               {submittedOrders.length === 0 ? (
-                <div className="text-center py-20 text-slate-500">
-                  <div className="text-4xl mb-4">📦</div>
-                  <p className="text-lg">No orders yet</p>
-                  <p className="text-sm mt-1">Submit an order or generate random ones</p>
+                <div className="flex-1 flex flex-col items-center justify-center text-slate-600 py-20">
+                  <div className="w-20 h-20 rounded-3xl bg-white/[0.02] border border-white/5 flex items-center justify-center mb-6">
+                    <Box size={40} className="opacity-20" />
+                  </div>
+                  <p className="text-lg font-bold tracking-tight">No active shipments</p>
+                  <p className="text-sm font-medium mt-1">Submit an order to start simulation</p>
                 </div>
               ) : (
-                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+                <div className="space-y-4 max-h-[700px] overflow-y-auto pr-4 custom-scrollbar">
                   <AnimatePresence mode="popLayout">
                     {submittedOrders.map((order) => (
                       <motion.div key={order.order_id} initial={{ opacity: 0, y: -20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }} layout
-                        className="bg-[#111827]/50 border border-indigo-500/10 rounded-xl p-4 hover:border-indigo-500/20 transition-colors">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-3">
-                            <code className="text-indigo-400 text-sm font-mono font-bold">#{order.order_id}</code>
-                            <span className={cn("px-2.5 py-0.5 rounded-lg border text-xs font-medium capitalize", getStatusBgColor(order.status))}>
+                        className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 hover:bg-white/[0.05] hover:border-white/10 transition-all group">
+                        <div className="flex items-start justify-between mb-5">
+                          <div className="flex items-center gap-4">
+                            <div className="px-3 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-xs font-black font-mono">
+                              #{order.order_id}
+                            </div>
+                            <span className={cn("px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border", getStatusBgColor(order.status))}>
                               {order.status.replace("_", " ")}
                             </span>
                           </div>
-                          <span className="text-xs text-slate-500 font-mono">{formatTimestamp(order.timestamp)}</span>
+                          <div className="flex items-center gap-2 text-slate-500 font-mono text-[10px] font-bold bg-black/20 px-2 py-1 rounded-md">
+                            <Clock size={10} /> {formatTimestamp(order.timestamp)}
+                          </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-3 text-sm">
-                          <div><span className="text-slate-500 text-xs">From</span><p className="text-slate-300 truncate">{order.pickup_location}</p></div>
-                          <div><span className="text-slate-500 text-xs">To</span><p className="text-slate-300 truncate">{order.drop_location}</p></div>
+
+                        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6 mb-6">
+                          <div>
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">ORIGIN</span>
+                            <p className="text-white font-bold truncate text-sm">{order.pickup_location}</p>
+                          </div>
+                          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/5 flex items-center justify-center">
+                            <ArrowRight size={14} className="text-indigo-500" />
+                          </div>
+                          <div className="text-right">
+                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-1">DESTINATION</span>
+                            <p className="text-white font-bold truncate text-sm">{order.drop_location}</p>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-slate-700/50">
-                          <span className={cn("text-xs font-medium capitalize", order.priority === "express" ? "text-amber-400" : "text-slate-400")}>
-                            {order.priority === "express" && "⚡ "}{order.priority}
-                          </span>
-                          <span className="text-xs text-slate-400 capitalize">📦 {order.package_type}</span>
-                          <span className={cn("ml-auto text-xs font-medium", order.risk_score >= 70 ? "text-red-400" : order.risk_score >= 40 ? "text-amber-400" : "text-emerald-400")}>
-                            Risk: {order.risk_score}%
-                          </span>
+
+                        <div className="flex items-center gap-6 pt-5 border-t border-white/5">
+                          <div className="flex items-center gap-2">
+                            {order.priority === "express" ? <Zap size={14} className="text-amber-500" /> : <Clock size={14} className="text-slate-500" />}
+                            <span className={cn("text-[10px] font-black tracking-widest uppercase", order.priority === "express" ? "text-amber-500" : "text-slate-500")}>
+                              {order.priority}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Package size={14} className="text-slate-500" />
+                            <span className="text-[10px] font-black tracking-widest uppercase text-slate-500">
+                              {order.package_type}
+                            </span>
+                          </div>
+                          <div className="ml-auto flex items-center gap-3">
+                            <div className="text-right">
+                              <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block">RISK FACTOR</span>
+                              <span className={cn("text-sm font-black", 
+                                order.risk_score >= 70 ? "text-red-500" : 
+                                order.risk_score >= 40 ? "text-amber-500" : "text-emerald-500")}>
+                                {order.risk_score}%
+                              </span>
+                            </div>
+                            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 group-hover:bg-indigo-500/10 transition-colors">
+                              <AlertCircle size={18} className={cn(
+                                order.risk_score >= 70 ? "text-red-500" : 
+                                order.risk_score >= 40 ? "text-amber-500" : "text-emerald-500"
+                              )} />
+                            </div>
+                          </div>
                         </div>
                       </motion.div>
                     ))}
@@ -206,14 +284,6 @@ export default function OrdersPage() {
                 </div>
               )}
             </div>
-            {submittedOrders.length > 0 && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 mt-6">
-                <h3 className="text-sm font-semibold text-slate-400 mb-3">Last Submitted JSON</h3>
-                <pre className="text-xs text-indigo-300 bg-[#0a0e17] rounded-xl p-4 overflow-x-auto font-mono">
-                  {JSON.stringify(submittedOrders[0], null, 2)}
-                </pre>
-              </motion.div>
-            )}
           </motion.div>
         </div>
       </div>

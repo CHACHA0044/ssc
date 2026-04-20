@@ -107,7 +107,7 @@ export default function NetworkGraph() {
               cx={node.x}
               cy={node.y}
               r={12}
-              fill="#0B0F19"
+              fill="#06080F"
               stroke={riskColors[node.risk]}
               strokeWidth={2}
               whileHover={{ r: 15 }}

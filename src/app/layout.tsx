@@ -1,17 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ToastProvider from "@/components/Toast";
+import PageTransition from "@/components/PageTransition";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const cardo = localFont({
+  src: [
+    {
+      path: "../../public/Cardo/Cardo-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/Cardo/Cardo-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/Cardo/Cardo-Italic.ttf",
+      weight: "400",
+      style: "italic",
+    },
+  ],
+  variable: "--font-cardo",
 });
 
 export const metadata: Metadata = {
@@ -29,11 +41,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${cardo.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#0B0F19] text-slate-200">
+      <body className="min-h-full flex flex-col bg-[#06080F] text-slate-200">
+        <div className="top-blur-gradient" />
         <Navbar />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 relative z-10">
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </main>
         <ToastProvider />
       </body>
     </html>

@@ -3,68 +3,96 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { Home, PlusSquare, LayoutDashboard, Info, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/", label: "Home", icon: "◈" },
-  { href: "/orders", label: "Create Order", icon: "⊞" },
-  { href: "/dashboard", label: "Dashboard", icon: "◫" },
-  { href: "/demo", label: "Demo", icon: "◉" },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/orders", label: "Create Order", icon: PlusSquare },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/demo", label: "Demo", icon: Info },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5, ease: "circOut" }}
+      className={cn(
+        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-4 pt-4 sm:px-6",
+        scrolled ? "pt-2" : "pt-4"
+      )}
     >
-      <div className="mx-4 mt-4 rounded-2xl bg-[#0B0F19]/70 backdrop-blur-xl border border-indigo-500/10 shadow-lg shadow-indigo-500/5">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div 
+        className={cn(
+          "max-w-7xl mx-auto rounded-2xl transition-all duration-500",
+          scrolled 
+            ? "bg-[#06080F]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-indigo-500/10" 
+            : "bg-transparent border border-transparent"
+        )}
+      >
+        <div className="px-6 py-3 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-indigo-500/25 group-hover:shadow-indigo-500/40 transition-shadow">
+          <Link href="/" className="flex items-center gap-3 group relative">
+            <div className="absolute -inset-2 bg-indigo-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300 group-hover:rotate-6">
               SC
             </div>
-            <span className="text-lg font-semibold text-white hidden sm:block">
+            <span className="relative text-xl font-bold text-white tracking-tight hidden sm:block">
               Supply<span className="text-indigo-400">Chain</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
+              const Icon = link.icon;
               return (
                 <Link key={link.href} href={link.href}>
                   <motion.div
                     className={cn(
-                      "relative px-4 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer",
+                      "relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer group",
                       isActive
                         ? "text-white"
-                        : "text-slate-400 hover:text-slate-200"
+                        : "text-slate-400 hover:text-white"
                     )}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="navbar-active"
-                        className="absolute inset-0 bg-indigo-500/15 border border-indigo-500/25 rounded-xl"
+                        className="absolute inset-0 bg-white/5 border border-white/10 rounded-xl"
                         transition={{
                           type: "spring",
-                          stiffness: 380,
+                          stiffness: 400,
                           damping: 30,
                         }}
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-2">
-                      <span className="text-xs opacity-60">{link.icon}</span>
+                      <Icon 
+                        size={16} 
+                        className={cn(
+                          "transition-transform duration-300 group-hover:scale-110",
+                          isActive ? "text-indigo-400" : "opacity-60"
+                        )} 
+                      />
                       {link.label}
                     </span>
                   </motion.div>
@@ -76,35 +104,9 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-slate-400 hover:text-white transition-colors p-2"
-            aria-label="Toggle menu"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-slate-300 hover:text-white transition-colors"
           >
-            <motion.div
-              animate={mobileOpen ? "open" : "closed"}
-              className="w-5 h-5 flex flex-col justify-center gap-1"
-            >
-              <motion.span
-                variants={{
-                  closed: { rotate: 0, y: 0 },
-                  open: { rotate: 45, y: 4 },
-                }}
-                className="block w-5 h-0.5 bg-current origin-center"
-              />
-              <motion.span
-                variants={{
-                  closed: { opacity: 1 },
-                  open: { opacity: 0 },
-                }}
-                className="block w-5 h-0.5 bg-current"
-              />
-              <motion.span
-                variants={{
-                  closed: { rotate: 0, y: 0 },
-                  open: { rotate: -45, y: -4 },
-                }}
-                className="block w-5 h-0.5 bg-current origin-center"
-              />
-            </motion.div>
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
@@ -115,31 +117,31 @@ export default function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden overflow-hidden border-t border-indigo-500/10"
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden overflow-hidden border-t border-white/5 bg-[#06080F]/90 backdrop-blur-2xl rounded-b-2xl"
             >
-              <div className="px-4 py-3 space-y-1">
+              <div className="px-4 py-4 space-y-2">
                 {NAV_LINKS.map((link) => {
                   const isActive = pathname === link.href;
+                  const Icon = link.icon;
                   return (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
                     >
-                      <div
+                      <motion.div
+                        whileTap={{ scale: 0.98 }}
                         className={cn(
-                          "px-4 py-3 rounded-xl text-sm font-medium transition-all",
+                          "px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-3",
                           isActive
-                            ? "bg-indigo-500/15 text-white border border-indigo-500/25"
+                            ? "bg-indigo-500/10 text-white border border-indigo-500/20"
                             : "text-slate-400 hover:text-white hover:bg-white/5"
                         )}
                       >
-                        <span className="flex items-center gap-3">
-                          <span className="text-base">{link.icon}</span>
-                          {link.label}
-                        </span>
-                      </div>
+                        <Icon size={18} className={isActive ? "text-indigo-400" : "opacity-60"} />
+                        {link.label}
+                      </motion.div>
                     </Link>
                   );
                 })}

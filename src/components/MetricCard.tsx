@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 interface MetricCardProps {
   title: string;
   value: React.ReactNode;
-  icon: string;
+  icon: React.ReactNode;
   change?: string;
   changeType?: "positive" | "negative" | "neutral";
   gradient?: string;
