@@ -31,10 +31,10 @@ const fadeInUp = {
 };
 
 const FEATURES = [
-  { icon: Sparkles, title: "Predictive Disruption Detection", description: "ML-powered forecasting identifies supply chain disruptions 24-72 hours before they impact operations.", color: "group-hover:text-indigo-400" },
-  { icon: Zap, title: "Real-Time Route Optimization", description: "Dynamic rerouting algorithms find optimal paths through the network in under 200ms.", color: "group-hover:text-cyan-400" },
-  { icon: ShieldCheck, title: "Bottleneck Prevention", description: "Intelligent load balancing prevents cascading failures across interconnected supply nodes.", color: "group-hover:text-emerald-400" },
-  { icon: Activity, title: "Streaming Architecture", description: "Event-driven pipelines process millions of logistics events in real-time with sub-second latency.", color: "group-hover:text-amber-400" },
+  { icon: Sparkles, title: "Predictive Disruption Detection", description: "ML-powered forecasting identifies supply chain disruptions 24-72 hours before they impact operations.", color: "group-hover:text-indigo-400", hoverBg: "hover:border-indigo-500/20" },
+  { icon: Zap, title: "Real-Time Route Optimization", description: "Dynamic rerouting algorithms find optimal paths through the network in under 200ms.", color: "group-hover:text-cyan-400", hoverBg: "hover:border-cyan-500/20" },
+  { icon: ShieldCheck, title: "Bottleneck Prevention", description: "Intelligent load balancing prevents cascading failures across interconnected supply nodes.", color: "group-hover:text-emerald-400", hoverBg: "hover:border-emerald-500/20" },
+  { icon: Activity, title: "Streaming Architecture", description: "Event-driven pipelines process millions of logistics events in real-time with sub-second latency.", color: "group-hover:text-amber-400", hoverBg: "hover:border-amber-500/20" },
 ];
 
 export default function LandingPage() {
@@ -76,7 +76,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-6xl sm:text-7xl lg:text-8xl font-bold leading-[0.95] mb-8 tracking-tighter will-change-transform"
+            className="text-6xl sm:text-7xl lg:text-8xl font-bold leading-[1.1] mb-8 tracking-tighter will-change-transform"
           >
             <span className="text-white">Autonomous</span>
             <br />
@@ -96,10 +96,36 @@ export default function LandingPage() {
           </motion.p>
 
           <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+            className="flex flex-wrap justify-center gap-6"
+          >
+            <Link href="/orders">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2, backgroundColor: "#f8fafc" }}
+                whileTap={{ scale: 0.98 }}
+                className="px-10 py-5 rounded-2xl bg-white text-black font-black text-sm tracking-widest uppercase shadow-2xl transition-all cursor-pointer"
+              >
+                Launch Simulation
+              </motion.button>
+            </Link>
+            <Link href="/dashboard">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2, background: "rgba(255,255,255,0.08)", borderColor: "rgba(255,255,255,0.2)" }}
+                whileTap={{ scale: 0.98 }}
+                className="px-10 py-5 rounded-2xl border border-white/10 bg-white/[0.03] text-white font-black text-sm tracking-widest uppercase backdrop-blur-xl cursor-pointer transition-all"
+              >
+                Analytics Desk
+              </motion.button>
+            </Link>
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 1 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-20"
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20"
           >
             <motion.div
               animate={{ y: [0, 8, 0] }}
@@ -178,13 +204,17 @@ function ProblemSection() {
             { stat: "3.2X", label: "CASCADING IMPACT", desc: "Single delays amplify into multiple failure points across the network." },
             { stat: "$184B", label: "MARKET LOSS", desc: "Annual revenue lost globally due to poor disruption response." },
           ].map((item, i) => (
-            <div key={i} className="bg-black p-10 space-y-6">
+            <motion.div 
+              key={i} 
+              whileHover={{ backgroundColor: "rgba(255,255,255,0.02)", scale: 1.01 }}
+              className="bg-black p-10 space-y-6 transition-colors duration-500"
+            >
               <div className="text-5xl font-bold tracking-tighter text-white">{item.stat}</div>
               <div>
                 <div className="text-[10px] font-black text-slate-500 tracking-widest mb-2">{item.label}</div>
                 <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -207,13 +237,17 @@ function SolutionSection() {
                 { step: "02", title: "Predictive Analysis", desc: "Probabilistic modeling of route risks 72 hours into the future.", icon: Target },
                 { step: "03", title: "Autonomous Action", desc: "Automated rerouting and resource reallocation via neural graph search.", icon: RefreshCw },
               ].map((item, i) => (
-                <div key={i} className="flex gap-8 group">
-                  <div className="text-2xl font-black text-slate-800 group-hover:text-indigo-500 transition-colors duration-500">{item.step}</div>
+                <motion.div 
+                  key={i} 
+                  whileHover={{ x: 10 }}
+                  className="flex gap-8 group cursor-default"
+                >
+                  <div className="text-2xl font-black text-slate-800 group-hover:text-white transition-colors duration-500">{item.step}</div>
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white tracking-tight">{item.title}</h3>
-                    <p className="text-slate-500 leading-relaxed text-sm">{item.desc}</p>
+                    <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-indigo-400 transition-colors duration-500">{item.title}</h3>
+                    <p className="text-slate-500 leading-relaxed text-sm group-hover:text-slate-400 transition-colors duration-500">{item.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -221,10 +255,18 @@ function SolutionSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "circOut" }}
-            className="aspect-square rounded-3xl bg-white/[0.02] border border-white/5 flex items-center justify-center relative overflow-hidden"
+            className="aspect-square rounded-3xl bg-white/[0.02] border border-white/5 flex items-center justify-center relative overflow-hidden group"
           >
-            <div className="absolute inset-0 grid-pattern opacity-20" />
-            <Activity size={120} className="text-indigo-500/20" />
+            <div className="absolute inset-0 grid-pattern opacity-20 group-hover:opacity-40 transition-opacity duration-700" />
+            <motion.div
+              animate={{ 
+                scale: [1, 1.1, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Activity size={120} className="text-white/20" />
+            </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
           </motion.div>
         </div>
@@ -237,7 +279,10 @@ function FeaturesSection() {
   return (
     <section className="py-40 px-6 bg-black relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
-        <motion.div {...fadeInUp} className="text-center mb-32">
+        <motion.div 
+          {...fadeInUp} 
+          className="text-center mb-16"
+        >
           <h2 className="text-5xl font-bold text-white tracking-tighter mb-6">Built for Global Scale</h2>
           <p className="text-slate-500 text-xl font-medium">Enterprise infrastructure for the modern supply chain.</p>
         </motion.div>
@@ -248,13 +293,28 @@ function FeaturesSection() {
             return (
               <motion.div
                 key={i}
-                {...fadeInUp}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="glass-card p-12 group hover:bg-white/[0.02] transition-colors duration-500 will-change-transform"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -8, scale: 1.01 }}
+                className={cn(
+                  "glass-card p-12 group transition-all duration-500 will-change-transform cursor-default",
+                  feature.hoverBg
+                )}
               >
-                <Icon size={32} className={cn("mb-8 transition-colors duration-500 text-slate-600", feature.color)} />
-                <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{feature.title}</h3>
-                <p className="text-slate-500 leading-relaxed font-medium">{feature.description}</p>
+                <div className="relative mb-8">
+                  <motion.div
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <Icon size={32} className={cn("transition-colors duration-500 text-slate-600", feature.color)} />
+                  </motion.div>
+                  <div className="absolute -inset-4 bg-white/5 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4 tracking-tight group-hover:text-white transition-colors duration-500">{feature.title}</h3>
+                <p className="text-slate-500 leading-relaxed font-medium group-hover:text-slate-400 transition-colors duration-500">{feature.description}</p>
               </motion.div>
             );
           })}
