@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Home, PlusSquare, LayoutDashboard, Info, Menu, X } from "lucide-react";
 
@@ -19,41 +19,41 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 20);
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "circOut" }}
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 px-4 pt-4 sm:px-6",
+        "fixed top-0 left-0 right-0 z-[100] transition-all duration-500 px-4 pt-4 sm:px-8",
         scrolled ? "pt-2" : "pt-4"
       )}
     >
       <div 
         className={cn(
-          "max-w-7xl mx-auto rounded-2xl transition-all duration-500",
+          "max-w-7xl mx-auto rounded-3xl transition-all duration-700 overflow-hidden",
           scrolled 
-            ? "bg-[#06080F]/80 backdrop-blur-xl border border-white/10 shadow-2xl shadow-indigo-500/10" 
+            ? "bg-black/60 backdrop-blur-2xl border border-white/5 shadow-[0_20px_40px_rgba(0,0,0,0.4)]" 
             : "bg-transparent border border-transparent"
         )}
       >
-        <div className="px-6 py-3 flex items-center justify-between">
+        <div className="px-8 py-4 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group relative">
-            <div className="absolute -inset-2 bg-indigo-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full" />
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-400 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-300 group-hover:rotate-6">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black font-black text-lg transition-transform duration-500 group-hover:scale-105 group-hover:rotate-6">
               SC
             </div>
-            <span className="relative text-xl font-bold text-white tracking-tight hidden sm:block">
-              Supply<span className="text-indigo-400">Chain</span>
+            <span className="text-xl font-bold text-white tracking-tighter hidden sm:block">
+              Supply<span className="text-slate-500">Chain</span>
             </span>
           </Link>
 
@@ -66,33 +66,22 @@ export default function Navbar() {
                 <Link key={link.href} href={link.href}>
                   <motion.div
                     className={cn(
-                      "relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer group",
+                      "relative px-5 py-2.5 rounded-2xl text-[11px] font-black tracking-widest uppercase transition-all duration-300 cursor-pointer group",
                       isActive
                         ? "text-white"
-                        : "text-slate-400 hover:text-white"
+                        : "text-slate-500 hover:text-white"
                     )}
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     {isActive && (
                       <motion.div
-                        layoutId="navbar-active"
-                        className="absolute inset-0 bg-white/5 border border-white/10 rounded-xl"
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 30,
-                        }}
+                        layoutId="nav-active"
+                        className="absolute inset-0 bg-white/[0.05] border border-white/5 rounded-2xl"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
-                    <span className="relative z-10 flex items-center gap-2">
-                      <Icon 
-                        size={16} 
-                        className={cn(
-                          "transition-transform duration-300 group-hover:scale-110",
-                          isActive ? "text-indigo-400" : "opacity-60"
-                        )} 
-                      />
+                    <span className="relative z-10 flex items-center gap-3">
+                      <Icon size={14} className={cn("transition-transform duration-500 group-hover:scale-110", isActive ? "text-white" : "opacity-40")} />
                       {link.label}
                     </span>
                   </motion.div>
@@ -104,7 +93,7 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-slate-300 hover:text-white transition-colors"
+            className="md:hidden w-10 h-10 flex items-center justify-center rounded-2xl bg-white/[0.03] text-slate-400 hover:text-white transition-colors border border-white/5"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -117,10 +106,10 @@ export default function Navbar() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="md:hidden overflow-hidden border-t border-white/5 bg-[#06080F]/90 backdrop-blur-2xl rounded-b-2xl"
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="md:hidden border-t border-white/5 bg-black/90 backdrop-blur-3xl"
             >
-              <div className="px-4 py-4 space-y-2">
+              <div className="px-6 py-8 space-y-3">
                 {NAV_LINKS.map((link) => {
                   const isActive = pathname === link.href;
                   const Icon = link.icon;
@@ -133,13 +122,13 @@ export default function Navbar() {
                       <motion.div
                         whileTap={{ scale: 0.98 }}
                         className={cn(
-                          "px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center gap-3",
+                          "px-6 py-4 rounded-2xl text-[10px] font-black tracking-widest uppercase transition-all flex items-center gap-4 border",
                           isActive
-                            ? "bg-indigo-500/10 text-white border border-indigo-500/20"
-                            : "text-slate-400 hover:text-white hover:bg-white/5"
+                            ? "bg-white/5 text-white border-white/10 shadow-lg shadow-black/20"
+                            : "text-slate-500 border-transparent hover:text-white hover:bg-white/5"
                         )}
                       >
-                        <Icon size={18} className={isActive ? "text-indigo-400" : "opacity-60"} />
+                        <Icon size={16} className={isActive ? "text-white" : "opacity-30"} />
                         {link.label}
                       </motion.div>
                     </Link>

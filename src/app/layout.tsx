@@ -43,7 +43,7 @@ export default function RootLayout({
       lang="en"
       className={`${cardo.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#06080F] text-slate-200">
+      <body className="min-h-full flex flex-col bg-black text-slate-200">
         <div className="top-blur-gradient" />
         <Navbar />
         <main className="flex-1 relative z-10">
